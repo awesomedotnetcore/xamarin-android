@@ -7,6 +7,16 @@ steps:
   parameters:
     provisionExtraArgs: ${{ parameters.provisionExtraArgs }}
 
+- script: |
+    echo void AndroidNdk20() { AndroidSdk ().SdkManagerPackage ("ndk;20.0.5594570"); } > provision-ndk.csx
+  displayName: Create NDK Provision Script
+      
+- task: provisionator@2
+  inputs:
+    provisionator_uri: $(provisionator-uri)
+    github_token: $(GitHub.Token)
+    provisioning_script: provision-ndk.csx
+    
 - task: UseDotNet@2
   displayName: install .NET Core $(DotNetCoreVersion)
   inputs:
